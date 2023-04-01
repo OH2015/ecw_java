@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<!-- 共通：コンテンツ領域右 -->
+<div class="content_right" th:fragment="content_right" >
+	<form method="post" th:action="@{/search}" id="search">
+		<div th:if="${rd == 8 || rd == 9}" class="banner_right" th:style="'background-image:url(\'' + @{/images/サンプルバナー300x700_3.png} + '\');'" th:onclick="javascript:onClickBanner('1');">
+		</div>
+		<div th:if="${rd == 7 || rd == 6}" class="banner_right" th:style="'background-image:url(\'' + @{/images/サンプルバナー300x700_2.png} + '\');'" th:onclick="javascript:onClickBanner('2');">
+		</div>
+
+		<div th:if="${rd == 3 || rd == 4 || rd == 5}">
+			<div class="banner2_right" th:style="'background-image:url(\'' + @{/images/サンプルバナー4.png} + '\');'" th:onclick="javascript:onClickBanner('3');">
+			</div>
+			<div class="banner2_right" th:style="'background-image:url(\'' + @{/images/サンプルバナー5.png} + '\');'" th:onclick="javascript:onClickBanner('4');">
+			</div>
+		</div>
+		<div th:if="${rd == 0 || rd == 1 || rd == 2}">
+			<div class="banner2_right" th:style="'background-image:url(\'' + @{/images/サンプルバナー6.png} + '\');'" th:onclick="javascript:onClickBanner('5');">
+			</div>
+			<div class="banner2_right" th:style="'background-image:url(\'' + @{/images/サンプルバナー3.png} + '\');'" th:onclick="javascript:onClickBanner('6');">
+			</div>
+		</div>
+		<input type="hidden" name="c1" id="hid_c1">
+		<input type="hidden" name="c2" id="hid_c2">
+	</form>
+	<form th:action="@{/}" id="top"></form>
+</div>
+
+</html>
+

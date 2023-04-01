@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 共通：コンテンツ領域左 -->
+<div class="content_left" th:fragment="content_left">
+	<!--/* 商品分類表示 */-->
+	<div class="item_category_box">
+		<form method="post" th:action="@{/search}" id="execSearchByCategory">
+			<th:block th:each="itemCategory : ${itemCategoryList}">
+				<div th:if="${#strings.equals(itemCategory.itemCategoryNum, '1')}"
+					th:text="${itemCategory.itemCategory1Name}"
+					class="item_category_name1"
+					th:onclick="javascript:searchByCategory([[${itemCategory.itemCategory1Cd}]],'');"
+				>
+				</div>
+				<div th:if="${#strings.equals(itemCategory.itemCategoryNum, '2')}"
+					th:text="${itemCategory.itemCategory2Name}"
+					class="item_category_name2"
+					th:onclick="javascript:searchByCategory([[${itemCategory.itemCategory1Cd}]],[[${itemCategory.itemCategory2Cd}]]);"
+				>
+				</div>
+			</th:block>
+			<input type="hidden" id="hid_c1" name="c1" />
+			<input type="hidden" id="hid_c2" name="c2" />
+		</form>
+	</div>
+
+	<!-- 課題#9	 -->
+	<div class="price_range_box">
+		<form method="post" th:action="@{/search}" id="execSearchByPrice">
+			<p>価格帯</p>
+			<div class="price_box">
+				<input type="text" th:value="${min}" id="min_text" maxlength="10">
+				<p>円から</p>
+			</div>
+			<div class="price_box">
+				<input type="text" th:value="${max}" id="max_text" maxlength="10">
+				<p>円まで</p>
+			</div>
+			<div class="button-wrapper">
+				<button th:onclick="javascript:searchByPrice()">
+				条件で絞り込んで検索</button>
+			</div>
+			<input type="hidden" id="hid_min" name="min"/>
+			<input type="hidden" id="hid_max" name="max"/>
+		</form>
+	</div>
+
+	<div class="admin">
+		<form method="post" th:action="@{/admin}" id="execAdmin">
+			<button type="submit">管理者はこちら</button>
+		</form>
+	</div>
+</div>
+
+</html>
+

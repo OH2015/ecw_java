@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ECWINDOW BtoC 商品詳細</title>
+<script th:src="@{/js/lib/jquery-3.6.0.js}"></script>
+<link th:href="@{/css/ecwpc.css}" rel="stylesheet" type="text/css" media="screen and (min-width: 768px)">
+<link th:href="@{/css/ecwsp.css}" rel="stylesheet" type="text/css" media="screen and (max-width: 767px)">
+<link th:href="@{/css/detailpc.css}" rel="stylesheet" type="text/css" media="screen and (min-width: 768px)">
+<link th:href="@{/css/detailsp.css}" rel="stylesheet" type="text/css" media="screen and (max-width: 767px)">
+<script th:src="@{/js/itemlist.js}"></script>
+</head>
+<body>
+	<div id="header_outline" th:replace="common/header"></div>
+
+	<!--/* コンテンツ領域 */-->
+	<div id="main_content">
+
+		<!--/* コンテンツ左 */-->
+		<div class="content_left" th:replace="common/content_left"></div>
+
+		<!--/* コンテンツ中央 */-->
+		<div class="content_center">
+			<!--/*/ <th:block th:unless="${itemdetail != null && itemdetail.itemCd != null && itemdetail.itemCd != ''}">  /*/-->
+				<div class="no_result" th:text="${common_msg.item_detail_no_result}"></div>
+			<!--/*/ </th:block>  /*/-->
+			<!--/*/ <th:block th:if="${itemdetail != null && itemdetail.itemCd != null && itemdetail.itemCd != ''}">  /*/-->
+			<div class="item_category_wrapper">
+				<form method="post" name="c1form" th:action="@{/search}">
+					<input type="hidden" name="c1" th:value="${itemdetail.itemCategory1Cd}">
+					<a href="javascript:c1form.submit()" class="item_category1" th:text="${itemdetail.itemCategory1Name}">カテゴリ1</a>
+				</form>
+				<div>&gt;</div>
+				<form method="post" name="c2form" th:action="@{/search}">
+					<input type="hidden" name="c1" th:value="${itemdetail.itemCategory1Cd}">
+					<input type="hidden" name="c2" th:value="${itemdetail.itemCategory2Cd}">
+					<a href="javascript:c2form.submit()" class="item_category2" th:text="${itemdetail.itemCategory2Name}">カテゴリ2</a>
+				</form>
+				<div>&gt;</div>
+				<div class="item_name" th:text="${itemdetail.itemName1}">商品名１</div>
+			</div>
+
+			<div class="item_wrapper" th:with="imagesPath=@{/images/}, itemImage1Path=${imagesPath + itemdetail.itemImage1}">
+
+				<!--/* スマホ画面要素 */-->
+				<div class="sp_div">
+					<div class="brand_name" th:text="${itemdetail.brandName}">ブランド名</div>
+					<div class="item_name" th:text="${itemdetail.itemName1}">商品名１</div>
+				</div>
+
+				<div class="item_image" th:style="'background-image:url(\'' + ${itemImage1Path} + '\');'"></div>
+				<div class="item_detail_wrapper">
+					<div class="brand_name" th:text="${itemdetail.brandName}">ブランド名</div>
+					<div class="item_name" th:text="${itemdetail.itemName1}">商品名１</div>
+					<div class="item_price" th:text="'&yen;&nbsp;' + ${#numbers.formatDecimal(itemdetail.wholesalePrice, 3, 'COMMA', 0, 'POINT')}">￥123456</div>
+					<div class="item_status">
+						<div class="in_stock" th:if="${itemdetail.statusCd == '00' && itemdetail.stockNum > 0}" th:text="${itemdetail.stockStatus}"></div>
+						<div class="no_stock" th:if="${itemdetail.statusCd == '00' && itemdetail.stockNum <= 0}" th:text="${itemdetail.stockStatus}"></div>
+						<div class="reserve" th:if="${itemdetail.statusCd == '01'}" th:text="${itemdetail.statusName}"></div>
+						<div class="end_of_sales" th:if="${itemdetail.statusCd == '99'}" th:text="${itemdetail.statusName}"></div>
+					</div>
+
+					<div class="code_wrapper">
+						<div class="code_name_content">
+							<p th:if="${itemdetail.itemCd != null && itemdetail.itemCd != ''}">商品コード</p>
+							<p th:if="${itemdetail.modelNumber != null && itemdetail.modelNumber != ''}">型番</p>
+							<p th:if="${itemdetail.janCd != null && itemdetail.janCd != ''}">JANコード</p>
+						</div>
+						<div class="code_content">
+							<p th:if="${itemdetail.itemCd != null && itemdetail.itemCd != ''}" th:text="${itemdetail.itemCd}">商品コード</p>
+							<p th:if="${itemdetail.modelNumber != null && itemdetail.modelNumber != ''}" th:text="${itemdetail.modelNumber}">型番</p>
+							<p th:if="${itemdetail.janCd != null && itemdetail.janCd != ''}" th:text="${itemdetail.janCd}">JANコード</p>
+						</div>
+					</div>
+
+					<div th:if="${itemdetail.description != null && itemdetail.description != ''}" class="description_label">商品説明</div>
+					<div class="item_description" th:if="${itemdetail.description != null}" th:utext="${itemdetail.description}"></div>
+				</div>
+			</div>
+
+			<div class="recommendation" th:if="${recommendList != null && recommendList.size > 0}">
+				<p>こちらもおすすめ</p>
+				<form method="get" th:action="@{/detail}" th:id="execDetail">
+					<div class="recommend_contents_wrapper">
+						<!--/*/ <th:block th:each="recommend :${recommendList}">  /*/-->
+							<div class="recommend_content" th:onclick="javascript:onClickItem([[${recommend.itemCd}]]);" th:with="imagesPath=@{/images/}, itemImage1Path=${imagesPath + recommend.itemImage1}">
+								<div class="item_image" th:style="'background-image:url(' + ${itemImage1Path} + ');'"></div>
+								<div class="brand_name" th:text="${recommend.brandName}"></div>
+								<div class="item_name" th:text="${recommend.itemName1}"></div>
+								<div class="price" th:text="'&yen;&nbsp;' + ${#numbers.formatDecimal(recommend.wholesalePrice, 3, 'COMMA', 0, 'POINT')}"></div>
+								<div class="item_status">
+									<div class="in_stock" th:if="${recommend.statusCd == '00' && recommend.stockNum > 0}" th:text="${recommend.stockStatus}"></div>
+									<div class="no_stock" th:if="${recommend.statusCd == '00' && recommend.stockNum <= 0}" th:text="${recommend.stockStatus}"></div>
+									<div class="reserve" th:if="${recommend.statusCd == '01'}" th:text="${recommend.statusName}"></div>
+									<div class="end_of_sales" th:if="${recommend.statusCd == '99'}" th:text="${recommend.statusName}"></div>
+								</div>
+							</div>
+						<!--/*/ </th:block>  /*/-->
+					</div>
+					<input type="hidden" id="hid_detail_cd" name="item_cd">
+				</form>
+			</div>
+			<!--/*/ </th:block>  /*/-->
+		</div>
+
+		<!--/* コンテンツ右 */-->
+		<div class="content_right" th:replace="common/content_right"></div>
+	</div>
+</body>
+</html>

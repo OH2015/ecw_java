@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ECWAdmin</title>
+
+
+<!-- FontAwsome のCDN -->
+<script defer
+	src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet"
+	th:href="@{https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback}">
+<!-- IonIcons -->
+<link rel="stylesheet"
+	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/dist/css/adminlte.min.css}">
+</head>
+
+<body class="hold-transition sidebar-mini">
+	<div class="wrapper">
+
+
+		<div th:replace="common/sidebar_left"></div>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0">ホーム</h1>
+						</div>
+						<!-- /.col -->
+
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /.content-header -->
+
+			<!-- Main content -->
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+
+						<div class="card col-lg-12">
+							<div class="card-header border-0">
+								<div class="d-flex justify-content-between">
+									<h3 class="card-title">売り上げ</h3>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="position-relative mb-4">
+									<div class="chartjs-size-monitor">
+										<div class="chartjs-size-monitor-expand">
+											<div class=""></div>
+										</div>
+										<div class="chartjs-size-monitor-shrink">
+											<div class=""></div>
+										</div>
+									</div>
+									<canvas id="sales-chart" height="200"
+										style="display: block; width: 410px; height: 200px;"width="410" class="chartjs-render-monitor"></canvas>
+								</div>
+
+								<div class="d-flex flex-row justify-content-end"></div>
+							</div>
+						</div>
+						<div class="col-lg-6"></div>
+					</div>
+
+
+					<div class="row">
+
+						<div class="col-lg-6">
+							<div id="order-status" class="card rounded border-0">
+								<div class="card-header">
+									<p class="card-title">売上状況</p>
+								</div>
+
+								<div class="card-body p-0">
+									<div
+										class="d-block border border-top-0 border-left-0 border-right-0">
+										<div class="row align-items-center p-3 d-block">
+											<div class="col align-middle">
+												<span class="align-middle">今日の売上</span>
+											</div>
+											<div class="col-auto text-right align-middle">
+												<span class="h4 align-middle font-weight-normal text-dark"
+													th:text="${#numbers.formatDecimal(earningsToday, 3, 'COMMA', 0, 'POINT')}+'円'">0</span>
+											</div>
+										</div>
+									</div>
+									<div
+										class="d-block border border-top-0 border-left-0 border-right-0">
+
+										<div class="row align-items-center p-3 d-block">
+											<div class="col align-middle">
+												<span class="align-middle">昨日の売上</span>
+											</div>
+											<div class="col-auto text-right align-middle">
+												<span class="h4 align-middle font-weight-normal text-dark"
+													th:text="${#numbers.formatDecimal(earningsYesterday, 3, 'COMMA', 0, 'POINT')}+'円'">0</span>
+											</div>
+										</div>
+									</div>
+									<div
+										class="d-block border border-top-0 border-left-0 border-right-0">
+										<div class="row align-items-center p-3 d-block">
+											<div class="col align-middle">
+												<span class="align-middle">今月の売上</span>
+											</div>
+											<div class="col-auto text-right align-middle">
+												<span class="h4 align-middle font-weight-normal text-dark"
+													th:text="${#numbers.formatDecimal(earningsThisMonth, 3, 'COMMA', 0, 'POINT')}+'円'">0</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /.col-md-6 -->
+						<div class="col-lg-6">
+							<div id="shop-statistical" class="card rounded border-0">
+								<div class="card-header">
+									<div class="d-inline-block">
+										<span class="card-title">ショップ状況</span>
+									</div>
+								</div>
+								<div class="card-body p-0">
+									<div
+										class="d-block border border-top-0 border-left-0 border-right-0">
+										<a th:href="@{/admin/itemlist}" class="p-3 d-block">
+											<div class="row align-items-center">
+												<div class="col-2 align-middle text-center">
+													<i class="fa fa-inbox fa-2x text-secondary"
+														aria-hidden="true"></i>
+												</div>
+												<div class="col p-0">
+													<span class="align-middle">在庫切れ商品数</span>
+												</div>
+												<div class="col-auto text-right align-middle">
+													<span class="h4 align-middle font-weight-normal text-dark" th:text="${noStock}">0</span>
+												</div>
+											</div>
+										</a>
+									</div>
+									<div
+										class="d-block border border-top-0 border-left-0 border-right-0">
+										<a th:href="@{/admin/itemlist}" class="p-3 d-block">
+											<div class="row align-items-center">
+												<div class="col-2 align-middle text-center">
+													<i class="fa fa-cubes fa-2x text-secondary"
+														aria-hidden="true"></i>
+												</div>
+												<div class="col p-0">
+													<span class="align-middle">取扱商品数</span>
+												</div>
+												<div class="col-auto text-check align-middle">
+													<span class="h4 align-middle font-weight-normal text-dark" th:text="${itemTotalNum}">0</span>
+												</div>
+											</div>
+										</a>
+									</div>
+									<div
+										class="d-block border border-top-0 border-left-0 border-right-0">
+										<a href="#" class="p-3 d-block">
+											<div class="row align-items-center">
+												<div class="col-2 align-middle text-center">
+													<i class="fa fa-users fa-2x text-secondary"
+														aria-hidden="true"></i>
+												</div>
+												<div class="col p-0">
+													<span class="align-middle">会員数</span>
+												</div>
+												<div class="col-auto text-check align-middle">
+													<span class="h4 align-middle font-weight-normal text-dark">0</span>
+												</div>
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+
+
+		<!-- Main Footer -->
+		<footer class="main-footer">
+			<strong>Copyright &copy; 2014-2021 <a
+				href="https://adminlte.io">AdminLTE.io</a>.
+			</strong> All rights reserved.
+			<div class="float-right d-none d-sm-inline-block">
+				<b>Version</b> 3.1.0
+			</div>
+		</footer>
+	</div>
+	<!-- ./wrapper -->
+
+
+
+	<!-- thymeleafのinline構文を使ってセッションの値を受け渡す -->
+	<script type="text/javascript" th:inline="javascript">
+		orderList = /*[[${orderList}]]*/[];
+	</script>
+	<!-- Chart.js -->
+	<script th:src="@{/plugins/chart.js/Chart.min.js}"></script>
+	<!-- jquery -->
+	<script th:src="@{/plugins/jquery/jquery.min.js}"></script>
+	<!-- Bootstrap -->
+	<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- AdminLTE -->
+	<script th:src="@{/dist/js/adminlte.js}"></script>
+
+	<script th:src="@{/dist/js/pages/dashboard3.js}"></script>
+
+
+</body>
+</html>

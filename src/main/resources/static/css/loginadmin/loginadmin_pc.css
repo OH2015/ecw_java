@@ -1,0 +1,115 @@
+@charset "UTF-8";
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote {
+	margin: 0;
+	padding: 0;
+	caret-color: transparent;
+	outline: none;
+	font-family: Verdana, Meiryo, sans-serif;
+	font-weight: 500;
+	user-select: none;
+}
+
+body{background-color:black;}
+
+#header_outline {
+	display: table;
+	width: calc(100% - 50px);
+	min-width: calc(1280px - 50px);
+	height: 45px;
+	padding: 12px 25px;
+	background-color:gray;
+	border-color: #bcbcbc;
+	border-style: solid;
+	border-width: 0 0 1px 0;
+	box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+#header {
+	display: table;
+	width: 100%;
+}
+#header > .logo_cell {
+	display: table-cell;
+	width: 280px;
+	min-width: 280px;
+	padding: 2px 0;
+	cursor: pointer;
+}
+#header > .logo_cell > .main_text {
+	float: left;
+	font-size: 11px;
+	line-height: 13px;
+	color: #484848;
+	padding: 8px 8px 7px 0;
+}
+#header > .logo_cell > .main_logo {
+	float: left;
+	background-size: 168px 39px;
+	width: 168px;
+	height: 39px;
+}
+#header > .last_cell {
+	display: table-cell;
+	width: 320px;
+	min-width: 320px;
+	vertical-align: middle;
+	text-align: right;
+	line-height: 15px;
+	font-size: 12px;
+	padding-top: 2px;
+}
+
+#header .header_title h1{
+	text-align:center;
+}
+
+#login {
+  margin: 100px auto;
+  width: 320px;
+}
+
+#login form {
+  margin: auto;
+  padding: 22px 22px 22px 22px;
+  width: 100%;
+  border-radius: 5px;
+  background: #282e33;
+  border-top: 3px solid #434a52;
+  border-bottom: 3px solid #434a52;
+}
+
+#login form input[type="text"] {
+  background-color: #3b4148;
+  border-radius: 0px 3px 3px 0px;
+  color: #a9a9a9;
+  margin-bottom: 1em;
+  padding: 0 16px;
+  width: 280px;
+  height: 50px;
+}
+
+#login form input[type="password"] {
+  background-color: #3b4148;
+  border-radius: 0px 3px 3px 0px;
+  color: #a9a9a9;
+  margin-bottom: 1em;
+  padding: 0 16px;
+  width: 280px;
+  height: 50px;
+}
+
+#login form input[type="submit"] {
+  background: #b5cd60;
+  border: 0;
+  width: 100%;
+  height: 40px;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+#login form input[type="submit"]:hover {
+  background: #16aa56;
+}
+

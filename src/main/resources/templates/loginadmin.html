@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<link rel="icon" th:href="@{/favicon.ico}">
+
+<link th:href="@{/css/loginadmin/loginadmin_pc.css}" rel="stylesheet" type="text/css" media="screen and (min-width: 768px)">
+<link th:href="@{/css/loginadmin/loginadmin_sp.css}" rel="stylesheet" type="text/css" media="screen and (max-width: 767px)">
+<title>ECWINDOW 管理者TOP</title>
+</head>
+<body>
+
+<!-- 共通：ヘッダ領域 -->
+<div id="header_outline" th:fragment="header">
+	<div id="header">
+		<div class="logo_cell" th:onclick="'location.href=\'' + @{/} + '\''">
+			<div class="main_text"><span style="letter-spacing: 0.5em;">EC開発</span><br />研修セット</div>
+			<div class="main_logo" th:style="'background-image:url(' + @{/images/logo/ecwindow_logo.png} + ');'"></div>
+		</div>
+
+		<div class="header_title">
+			<h1>管理者専用サイト</h1>
+		</div>
+
+
+		<div class="joint_cell"></div>
+		<div class="last_cell">ログイン不要24時間商品検索し放題！<br>ぶらぶら散策ネットショッピングならECWINDOW</div>
+	</div>
+</div>
+
+<div class="main_content">
+	<div id="login">
+		<form method="post"  th:action="@{/admin}">
+			<input name="user" type="text" id="user" placeholder="Username">
+			<input name="pass" type="password" id="pass" placeholder="Password">
+			<button type="submit">Login</button>
+		</form>
+	</div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link rel="icon" th:href="@{/favicon.ico}">
+	<script th:src="@{/js/lib/jquery-3.6.0.js}"></script>
+	<link th:href="@{/css/ecwpc.css}" rel="stylesheet" type="text/css" media="screen and (min-width: 768px)">
+	<link th:href="@{/css/ecwsp.css}" rel="stylesheet" type="text/css" media="screen and (max-width: 767px)">
+	<script th:src="@{/js/itemlist.js}"></script>
+	<title>ECWINDOW BtoC 商品一覧</title>
+</head>
+<body>
+	<!--/* ヘッダ領域 */-->
+	<div id="header_outline" th:replace="common/header"></div>
+
+	<!--/* コンテンツ領域 */-->
+	<div id="main_content">
+
+		<!--/* コンテンツ左 */-->
+		<div class="content_left" th:replace="common/content_left"></div>
+
+		<!--/* コンテンツ中央 */-->
+		<div class="content_center">
+
+			<!--/* 商品分類表示 */-->
+			<!--/*/ <th:block th:if="${currentItemCategory1 != null} or ${currentItemCategory2 != null}">  /*/-->
+				<div class="item_category_info">
+					<!--/*/ <th:block th:if="${currentItemCategory1 != null}">  /*/-->
+						<div th:text="${currentItemCategory1.itemCategory1Name}" class="cat1"></div>
+					<!--/*/ </th:block>  /*/-->
+					<!--/*/ <th:block th:if="${currentItemCategory2 != null}">  /*/-->
+						<div class="arrow">&gt;</div>
+						<div th:text="${currentItemCategory2.itemCategory2Name}" class="cat2"></div>
+					<!--/*/ </th:block>  /*/-->
+				</div>
+			<!--/*/ </th:block>  /*/-->
+
+			<!--/* 商品検索結果 */-->
+			<!--/*/ <th:block th:if="${itemList != null && itemList.size > 0 && itemList.content != null && itemList.content.size > 0}">  /*/-->
+
+				<!--/* 課題#04 */-->
+				<!--/* 検索結果の表示 */-->
+				<!--/*/ <th:block th:if="${!#strings.isEmpty(k)}">  /*/-->
+					<div th:text="'キーワード「' + ${k} + '」で'" class="search_result_by"></div>
+				<!--/*/ </th:block>  /*/-->
+				<div class="search_result_wrap">
+					<div th:utext="'検索結果が<span class=item_count>' + ${itemList.content[0].count} + '</span>件ありました。'" class="count_info"></div>
+					<div th:if="${itemList.totalPages > 1}" th:text="${itemList.pageable.pageSize} + '件ずつ表示しています。（' + ${itemList.pageable.pageNumber + 1} + 'ページ目）'" class="page_info"></div>
+				</div>
+
+				<!--/* ページャの表示 1ページ未満の場合は非表示*/-->
+				<div th:if="${itemList.totalPages > 1}" class="pager">
+					<form method="post" th:action="@{/search}" id="execPaging">
+
+						<!--/* 総ページ数が10ページ未満の場合は、全ページ表示 */-->
+						<!--/*/ <th:block th:if="${itemList.totalPages < 10}">  /*/-->
+							<!--/*/ <th:block th:each="i : ${#numbers.sequence(1, itemList.totalPages)}">  /*/-->
+								<div class="page_num"
+									th:classappend="( ${i} == ${itemList.pageable.pageNumber + 1} ) ? 'active' : ''"
+									th:onclick="javascript:paging([[${c1}]],[[${c2}]],[[${k}]],[[${min}]],[[${max}]],[[${i}]]);"
+									th:text="${i}">
+								</div>
+							<!--/*/ </th:block>  /*/-->
+						<!--/*/ </th:block>  /*/-->
+
+						<!--/* 総ページ数が10ページ以上 */-->
+						<!--/*/ <th:block th:if="${itemList.totalPages >= 10}">  /*/-->
+							<!--/*/ <th:block th:each="i : ${#numbers.sequence(1, itemList.totalPages)}">  /*/-->
+								<!--/* 1ページ目は常に表示 */-->
+								<div class="page_num"
+									th:if="${i == 1}"
+									th:classappend="( ${i} == ${itemList.pageable.pageNumber + 1} ) ? 'active' : ''"
+									th:onclick="javascript:paging([[${c1}]],[[${c2}]],[[${k}]],[[${min}]],[[${max}]],[[${i}]]);"
+									th:text="${i}">
+								</div>
+								<!--/* 現在ページ±7ページを表示 */-->
+								<div class="page_num"
+									th:if="${(i - 7) <= (itemList.pageable.pageNumber + 1)} and ${(itemList.pageable.pageNumber + 1) <= (i + 7)} or (${itemList.pageable.pageNumber < 8} and ${i < 17}) or (${itemList.pageable.pageNumber > (itemList.totalPages - 9)} and ${i > (itemList.totalPages - 16)})"
+									th:unless="${i == 1} or ${i == itemList.totalPages}"
+									th:classappend="( ${i} == ${itemList.pageable.pageNumber + 1} ) ? 'active' : ''"
+									th:onclick="javascript:paging([[${c1}]],[[${c2}]],[[${k}]],[[${min}]],[[${max}]],[[${i}]]);"
+									th:text="${i}">
+								</div>
+								<!--/* 最終ページは常に表示 */-->
+								<div class="page_num"
+									th:if="${i == itemList.totalPages}"
+									th:classappend="( ${i} == ${itemList.pageable.pageNumber + 1} ) ? 'active' : ''"
+									th:onclick="javascript:paging([[${c1}]],[[${c2}]],[[${k}]],[[${min}]],[[${max}]],[[${i}]]);"
+									th:text="${i}">
+								</div>
+							<!--/*/ </th:block>  /*/-->
+						<!--/*/ </th:block>  /*/-->
+
+						<input type="hidden" id="hid_p_c1" name="c1" />
+						<input type="hidden" id="hid_p_c2" name="c2" />
+						<input type="hidden" id="hid_p_k" name="k" />
+						<input type="hidden" id="hid_p_min" name="min" />
+						<input type="hidden" id="hid_p_max" name="max" />
+						<input type="hidden" id="hid_p_page" name="page" />
+					</form>
+				</div>
+
+				<form method="get" th:action="@{/detail}" th:id="execDetail">
+				<!--/*/ <th:block th:each="item : ${itemList.content}"> /*/-->
+					<!--/* 課題#10 商品詳細画面へのリンクを設定します。 */-->
+					<div class="item_box" th:onclick="javascript:onClickItem([[${item.itemCd}]]);">
+						<div class="item_container">
+							<div class="item_cell" th:with="imagesPath=@{/images/}, itemImage1Path=${imagesPath + item.itemImage1}">
+								<div class="item_image">
+									<div class="item_image" th:style="'background-image:url(\'' + ${itemImage1Path} + '\');'"></div>
+								</div>
+								<div class="brand_name" th:text="${item.brandName}"></div>
+								<div class="item_name" th:text="${item.itemName1 + '&nbsp;' + item.itemName2}"></div>
+								<div class="price" th:text="'&yen;&nbsp;' + ${#numbers.formatDecimal(item.wholesalePrice, 3, 'COMMA', 0, 'POINT')}"></div>
+
+								<!--/* 課題#06 在庫表示の仕様変更 */-->
+								<div class="in_stock" th:if="${item.statusCd == '00' && item.stockNum > 0}" th:text="${item.stockStatus}"></div>
+								<div class="no_stock" th:if="${item.statusCd == '00' && item.stockNum <= 0}" th:text="${item.stockStatus}"></div>
+								<div class="reserve" th:if="${item.statusCd == '01'}" th:text="${item.statusName}"></div>
+								<div class="end_of_sales" th:if="${item.statusCd == '99'}" th:text="${item.statusName}"></div>
+							</div>
+						</div>
+					</div>
+				<!--/*/ </th:block> /*/-->
+				<input type="hidden" id="hid_detail_cd" name="item_cd">
+				</form>
+
+			<!--/*/ </th:block>  /*/-->
+			<!--/*/ <th:block th:unless="${itemList != null && itemList.size > 0 && itemList.content != null && itemList.content.size > 0}">  /*/-->
+				<div class="no_result" th:text="${common_msg.item_search_no_result}"></div>
+			<!--/*/ </th:block>  /*/-->
+		</div>
+
+		<!--/* コンテンツ右 */-->
+		<div class="content_right" th:replace="common/content_right"></div>
+	</div>
+</body>
+</html>

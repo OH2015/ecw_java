@@ -1,0 +1,125 @@
+@charset "UTF-8";
+
+html {
+       overflow-y:scroll;
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote {
+	margin: 0;
+	padding: 0;
+	caret-color: transparent;
+	outline: none;
+	font-family: Verdana, Meiryo, sans-serif;
+	font-weight: 500;
+	user-select: none;
+
+}
+
+
+body {
+	-webkit-text-size-adjust: 100%;
+	background-color:black;
+}
+
+#header_outline {
+	display: block;
+	width: calc(100% - 30px);
+	min-width: calc(320px - 30px);
+	position: fixed;
+	padding: 6px 15px;
+	background-color:gray;
+	border-color: #bcbcbc;
+	border-style: solid;
+	border-width: 0 0 1px 0;
+	box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+#header {
+	display: block;
+	width: 100%;
+	background-color:gray;
+}
+#header > .logo_cell {
+	display: inline-table;
+	float: right;
+	width: 140px;
+	height: 34px;
+	padding: 4px 0 0 0;
+	cursor: pointer;
+}
+
+#header > .logo_cell > .main_text {
+	display: none;
+}
+
+#header > .logo_cell > .main_logo {
+	float: left;
+	background-size: 138px 33px;
+	width: 138px;
+	height: 36px;
+}
+#header > .joint_cell {
+	display: none;
+}
+#header > .last_cell {
+	display: none;
+}
+
+#main_content {
+
+	width: 100%;
+}
+
+#login {
+  position:relative;
+  top:150px;
+  display:flex;
+  justify-content:space-around;
+}
+
+#login form {
+  margin: auto;
+  padding: 22px 22px 22px 22px;
+  width: 80%;
+  border-radius: 5px;
+  background: #282e33;
+  border-top: 3px solid #434a52;
+  border-bottom: 3px solid #434a52;
+}
+
+#login form input[type="text"] {
+  background-color: #3b4148;
+  border-radius: 0px 3px 3px 0px;
+  color: #a9a9a9;
+  margin-bottom: 1em;
+  padding: 0 16px;
+  width: 90%;
+  height: 50px;
+}
+
+#login form input[type="password"] {
+  background-color: #3b4148;
+  border-radius: 0px 3px 3px 0px;
+  color: #a9a9a9;
+  margin-bottom: 1em;
+  padding: 0 16px;
+  width: 90%;
+  height: 50px;
+}
+
+#login form input[type="submit"] {
+  background: #b5cd60;
+  border: 0;
+  width: 100%;
+  height: 40px;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+#login form input[type="submit"]:hover {
+  background: #16aa56;
+}
+
+
+
